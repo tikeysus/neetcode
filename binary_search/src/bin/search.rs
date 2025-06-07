@@ -5,7 +5,7 @@
 
 fn main(){
 	let nums: Vec<i32> = vec![4,5,6,7,0,1,2]; 
-	let target: i32 = -2;
+	let target: i32 = 0;
 	println!("{}", search(nums, target)); 
 }
 
@@ -14,35 +14,22 @@ fn search(nums: Vec<i32>, target: i32) -> i32{
 }
 
 fn search_helper(nums: Vec<i32>, target: i32, acc: i32) -> i32{
-	if nums.len() == 2{
+	if nums.len() == 1{ //base case
 		if nums[0] == target{
 			return acc; 
 		}
-		else if nums[1] == target{
-			return acc + 1; 
-		}
-		else{
-			return -1; 
-		}
+		return -1; 
 	}
-
-	let middle: usize = nums.len()/2;
-	let middle_elem: i32 = nums[middle]; 
-	let upper_sub_arr: Vec<i32> = nums[middle..nums.len()].to_vec(); 
-	let lower_sub_arr: Vec<i32> = nums[0..=middle].to_vec(); 
+	
+	let middle = nums.len()/2;
+	let middle_elem = nums[middle]; 
+	
 	if middle_elem == target{
 		return acc + (middle as i32); 
-	}
-	else if middle_elem > target && middle_elem > nums[middle + 1]{
-		return search_helper(upper_sub_arr, target, acc + (middle as i32)); 
-	}
-	else if middle_elem > target && !(middle_elem > nums[middle + 1]){
-		return search_helper(lower_sub_arr, target, acc); 
-	}
-	else if middle_elem < target && middle_elem < nums[middle + 1]{
-		return search_helper(upper_sub_arr, target, acc + (middle as i32)); 
-	}
-	else{
-		return search_helper(lower_sub_arr, target, acc); 
-	}
+	} 
+
+	let last = nums.len() - 1;
+	let last_elem = nums[last]; 
+	let lower_sub = nums[0..=middle].to_vec(); 
+	let upper_sub = nums[middle..=last].to_vec(); 
 }
