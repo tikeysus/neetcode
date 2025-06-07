@@ -1,0 +1,48 @@
+// There is an integer array nums sorted in ascending order (with distinct values).
+// Prior to being passed to your function, nums is possibly rotated at an unknown pivot index k (1 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] might be rotated at pivot index 3 and become [4,5,6,7,0,1,2].
+// Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.
+// You must write an algorithm with O(log n) runtime complexity.
+
+fn main(){
+	let nums: Vec<i32> = vec![4,5,6,7,0,1,2]; 
+	let target: i32 = -2;
+	println!("{}", search(nums, target)); 
+}
+
+fn search(nums: Vec<i32>, target: i32) -> i32{
+	return search_helper(nums, target, 0); 
+}
+
+fn search_helper(nums: Vec<i32>, target: i32, acc: i32) -> i32{
+	if nums.len() == 2{
+		if nums[0] == target{
+			return acc; 
+		}
+		else if nums[1] == target{
+			return acc + 1; 
+		}
+		else{
+			return -1; 
+		}
+	}
+
+	let middle: usize = nums.len()/2;
+	let middle_elem: i32 = nums[middle]; 
+	let upper_sub_arr: Vec<i32> = nums[middle..nums.len()].to_vec(); 
+	let lower_sub_arr: Vec<i32> = nums[0..=middle].to_vec(); 
+	if middle_elem == target{
+		return acc + (middle as i32); 
+	}
+	else if middle_elem > target && middle_elem > nums[middle + 1]{
+		return search_helper(upper_sub_arr, target, acc + (middle as i32)); 
+	}
+	else if middle_elem > target && !(middle_elem > nums[middle + 1]){
+		return search_helper(lower_sub_arr, target, acc); 
+	}
+	else if middle_elem < target && middle_elem < nums[middle + 1]{
+		return search_helper(upper_sub_arr, target, acc + (middle as i32)); 
+	}
+	else{
+		return search_helper(lower_sub_arr, target, acc); 
+	}
+}
