@@ -5,7 +5,7 @@
 
 fn main(){
 	let nums: Vec<i32> = vec![4,5,6,7,0,1,2]; 
-	let target: i32 = 0;
+	let target: i32 = 5;
 	println!("{}", search(nums, target)); 
 }
 
@@ -30,6 +30,26 @@ fn search_helper(nums: Vec<i32>, target: i32, acc: i32) -> i32{
 
 	let last = nums.len() - 1;
 	let last_elem = nums[last]; 
-	let lower_sub = nums[0..=middle].to_vec(); 
+	let lower_sub = nums[0..middle].to_vec(); 
 	let upper_sub = nums[middle..=last].to_vec(); 
+
+	if target < middle_elem && last_elem <= middle_elem{
+		return search_helper(upper_sub, target, acc + (middle as i32)); 
+	}
+
+	else if target < middle_elem && last_elem > middle_elem{
+		return search_helper(lower_sub, target, acc); 
+	}
+
+	else if target > middle_elem && last_elem <= middle_elem{
+		return search_helper(lower_sub, target, acc + (middle as i32)); 
+	}
+
+	else if target > middle_elem && last_elem > middle_elem{
+		return search_helper(upper_sub, target, acc); 
+	}
+
+	else{
+		return -2; //debugging 
+	}
 }
